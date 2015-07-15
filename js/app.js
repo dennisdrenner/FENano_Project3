@@ -3,6 +3,19 @@ var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
+    //Set initial starting position for enemy bug.
+    //Randomly assign y coordinate to place bug on one of three rows of stones.
+
+    this.x = -100;
+    if (Math.random() <.33) {
+        this.y = 60;
+    } else if (Math.random() <.66) {
+        this.y = 143;
+    } else {
+        this.y = 223;
+    }
+
+
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -14,6 +27,17 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    //update x position, y position will not change as bugs are moving horizontally
+
+    if (this.x > 500) {
+        this.x = -100;
+    } else {
+         this.x = this.x + (300 * dt);
+    }
+
+
+
 }
 
 // Draw the enemy on the screen, required method for game
@@ -28,7 +52,20 @@ Enemy.prototype.render = function() {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+
+var bug = new Enemy();
+
+var allEnemies = [bug];
+
+
 // Place the player object in a variable called player
+var player = {};
+player.sprite = 'images/char-boy.png';
+player.update = function () {return;}
+player.render = function () {return;}
+player.handleInput = function () {return;}
+
+
 
 
 

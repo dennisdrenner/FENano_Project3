@@ -14,6 +14,7 @@
  * a little simpler to work with.
  */
 
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -92,7 +93,7 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+          enemy.update(dt);
         });
         player.update();
     }
