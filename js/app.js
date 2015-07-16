@@ -70,7 +70,7 @@ var Character = function() {
 
     //Set initial starting position for character
     this.x = 505-101-101-101;
-    this.y = 606-200;
+    this.y = 406;
 
     // The image/sprite for our player.
     this.sprite = 'images/char-boy.png';
@@ -79,10 +79,11 @@ var Character = function() {
 // Update the player's position
 // Parameter: dt, a time delta between ticks
 Character.prototype.update = function(direction) {
-    if (direction == 'left') { this.x -= 100;}
-    if (direction == 'right') { this.x += 100;}
-    if (direction == 'up') { this.y -= 80;}
-    if (direction == 'down') { this.y += 100;}
+
+    if (direction == 'left' && this.x >= 102) { this.x -= 100;}
+    if (direction == 'right' && this.x <= 302) { this.x += 100;}
+    if (direction == 'up'  && this.y > -14) { this.y -= 84;}
+    if (direction == 'down' && this.y <406) { this.y += 84;}
 }
 
 // Draw the enemy on the screen, required method for game
