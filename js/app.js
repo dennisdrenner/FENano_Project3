@@ -70,7 +70,7 @@ var Character = function() {
 
     //Set initial starting position for character
     this.x = 505-101-101-101;
-    this.y = 606-171;
+    this.y = 606-200;
 
     // The image/sprite for our player.
     this.sprite = 'images/char-boy.png';
@@ -79,15 +79,10 @@ var Character = function() {
 // Update the player's position
 // Parameter: dt, a time delta between ticks
 Character.prototype.update = function(direction) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    if (direction = 'left') { this.x -= 100;}
-    if (direction = 'right') { this.x += 100;}
-    if (direction = 'up') { this.y -= 100;}
-    if (direction = 'down') { this.y += 100;}
-
-    //Character.prototype.render();
+    if (direction == 'left') { this.x -= 100;}
+    if (direction == 'right') { this.x += 100;}
+    if (direction == 'up') { this.y -= 80;}
+    if (direction == 'down') { this.y += 100;}
 }
 
 // Draw the enemy on the screen, required method for game
@@ -96,15 +91,17 @@ Character.prototype.render = function() {
 }
 
 Character.prototype.handleInput = function (keyCode) {
-    if (keyCode =='left') { Character.prototype.update('left');}
-    if (keyCode == 'up') { Character.prototype.update('up');}
-    if (keyCode == 'right') { Character.prototype.update('right');}
-    if (keyCode == 'down') { Character.prototype.update('down');}
+    if (keyCode =='left') { player.update('left');}
+    if (keyCode == 'up') { player.update('up');}
+    if (keyCode == 'right') { player.update('right');}
+    if (keyCode == 'down') { player.update('down');}
 }
 
 // Place the player object in a variable called player
 
 var player = new Character();
+
+
 
 
 // Now instantiate your objects.
