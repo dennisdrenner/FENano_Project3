@@ -1,4 +1,14 @@
 
+
+var person = prompt("Would you like a Boy or Girl player?", "Girl");
+if (person != null) {
+   if (person == 'Boy' || person == 'Girl' || person == 'boy' || person == 'girl') {}
+   else {
+    prompt("Would you like a boy or girl player?", "Girl");
+   }
+}
+
+
 //Generate a random y coordinate/random row for enemies to appear
 var randomRow = function () {
     var y;
@@ -73,32 +83,45 @@ var Character = function() {
     this.y = 406;
 
     // The image/sprite for our player.
-    this.sprite = 'images/char-boy.png';
+
+    if (person == 'boy' || person == 'Boy') {
+        this.sprite = 'images/char-boy.png';
+    }
+    else { this.sprite = 'images/char-princess-girl.png'}
+
+        console.log('sprite:', this.sprite);
 }
+
 
 // Update the player's position
 // Parameter: dt, a time delta between ticks
 Character.prototype.update = function(direction) {
+    currentPlayer = this;
 
 //move character according to keyboard inputs but make sure it is not moving off the playing field
     if (direction == 'left' && this.x >= 102) { this.x -= 100;}
     if (direction == 'right' && this.x <= 302) { this.x += 100;}
     if (direction == 'up'  && this.y > -14) { this.y -= 84;}
     if (direction == 'down' && this.y <406) { this.y += 84;}
+    if (direction == 'slow') {
+        bug1.speed = 50;
+        bug2.speed = 50;
+        bug3.speed = 50;
+        console.log(bug1.speed, bug2.speed, bug3.speed);
+    }
 
-//check for collisions with enemies
-    if ((Math.abs(this.x - bug1.x) < 101) && (Math.abs(this.y - bug1.y)) < 85) {
-          this.x = 202;
-          this.y = 406;
+    //Check for collision with each enemy in the allEnemies array
+    //Reset player to initial position if collision detected
+
+    var detectCollision = function () {
+        allEnemies.forEach(function(enemy){
+            if ((Math.abs(currentPlayer.x - enemy.x) < 60) && (Math.abs(currentPlayer.y - enemy.y)) < 65) {
+              currentPlayer.x = 202;
+              currentPlayer.y = 406;
+            }
+        });
     }
-    if ((Math.abs(this.x - bug2.x) < 101) && (Math.abs(this.y - bug2.y)) < 85) {
-          this.x = 202;
-          this.y = 406;
-    }
-    if ((Math.abs(this.x - bug3.x) < 101) && (Math.abs(this.y - bug3.y)) < 85) {
-          this.x = 202;
-          this.y = 406;
-    }
+    detectCollision();
 }
 
 // Draw the enemy on the screen, required method for game
@@ -111,14 +134,13 @@ Character.prototype.handleInput = function (keyCode) {
     if (keyCode == 'up') { player.update('up');}
     if (keyCode == 'right') { player.update('right');}
     if (keyCode == 'down') { player.update('down');}
+    if (keyCode == 'slow') { player.update('slow');}
 
 }
 
 // Place the player object in a variable called player
 
 var player = new Character();
-
-
 
 
 // Now instantiate your objects.
@@ -132,17 +154,16 @@ var allEnemies = [bug1,bug2, bug3];
 
 
 
-
-
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
+// Cheat key 's' slows down enemies for one run across the field
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        83: 'slow'
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
