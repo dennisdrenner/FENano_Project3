@@ -69,7 +69,7 @@ var Character = function() {
     // we've provided one for you to get started
 
     //Set initial starting position for character
-    this.x = 505-101-101-101;
+    this.x = 202;
     this.y = 406;
 
     // The image/sprite for our player.
@@ -80,19 +80,24 @@ var Character = function() {
 // Parameter: dt, a time delta between ticks
 Character.prototype.update = function(direction) {
 
+//move character according to keyboard inputs but make sure it is not moving off the playing field
     if (direction == 'left' && this.x >= 102) { this.x -= 100;}
     if (direction == 'right' && this.x <= 302) { this.x += 100;}
     if (direction == 'up'  && this.y > -14) { this.y -= 84;}
     if (direction == 'down' && this.y <406) { this.y += 84;}
 
+//check for collisions with enemies
     if ((Math.abs(this.x - bug1.x) < 101) && (Math.abs(this.y - bug1.y)) < 85) {
-        console.log('COLLISION!!!');
+          this.x = 202;
+          this.y = 406;
     }
     if ((Math.abs(this.x - bug2.x) < 101) && (Math.abs(this.y - bug2.y)) < 85) {
-        console.log('COLLISION!!!');
+          this.x = 202;
+          this.y = 406;
     }
     if ((Math.abs(this.x - bug3.x) < 101) && (Math.abs(this.y - bug3.y)) < 85) {
-        console.log('COLLISION!!!');
+          this.x = 202;
+          this.y = 406;
     }
 }
 
