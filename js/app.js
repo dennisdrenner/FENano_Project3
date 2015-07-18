@@ -1,5 +1,7 @@
 
+"use strict";
 
+//Allow user to select girl or boy player
 var person = prompt("Would you like a Boy or Girl player?", "Girl");
 if (person != null) {
    if (person == 'Boy' || person == 'Girl' || person == 'boy' || person == 'girl') {}
@@ -74,29 +76,56 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+var Treasure = function () {
+    this.x = 79;
+    this.y = 202;
+    this.sprite = 'images/Star.png';
+}
+
+
+
+Treasure.prototype.update = function() {
+    this.x = 105;
+    this.y = 240;
+}
+
+// Draw the enemy on the screen, required method for game
+Treasure.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+
+
+var star = new Treasure();
+
+var allTreasures = [star];
+
 var Character = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     //Set initial starting position for character
-    this.x = 202;
-    this.y = 406;
+        this.x = 202;
+        this.y = 415;
+
+    //Set initial score
+        this.score = 0;
 
     // The image/sprite for our player.
-
     if (person == 'boy' || person == 'Boy') {
         this.sprite = 'images/char-boy.png';
-    }
-    else { this.sprite = 'images/char-princess-girl.png'}
 
-        console.log('sprite:', this.sprite);
+    } else {
+        this.sprite = 'images/char-cat-girl.png';
+    }
+
 }
 
 
 // Update the player's position
 // Parameter: dt, a time delta between ticks
 Character.prototype.update = function(direction) {
-    currentPlayer = this;
+    var currentPlayer = this;
 
 //move character according to keyboard inputs but make sure it is not moving off the playing field
     if (direction == 'left' && this.x >= 102) { this.x -= 100;}
@@ -110,14 +139,22 @@ Character.prototype.update = function(direction) {
         console.log(bug1.speed, bug2.speed, bug3.speed);
     }
 
-    //Check for collision with each enemy in the allEnemies array
-    //Reset player to initial position if collision detected
+    //Check for collision with enemies and treasures
+    //Reset player to initial position if collision detected with enemy
+    //Add points to player if collision with treasure
+
 
     var detectCollision = function () {
         allEnemies.forEach(function(enemy){
             if ((Math.abs(currentPlayer.x - enemy.x) < 60) && (Math.abs(currentPlayer.y - enemy.y)) < 65) {
               currentPlayer.x = 202;
               currentPlayer.y = 406;
+            }
+        });
+
+        allTreasures.forEach(function(treasure){
+            if ((Math.abs(currentPlayer.x - treasure.x) < 60) && (Math.abs(currentPlayer.y - treasure.y)) < 65) {
+                currentPlayer.score += 100;
             }
         });
     }
