@@ -72,21 +72,41 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
+var randomColumn = function () {
+    var x;
+    if (Math.random() <.2) {
+        x = 5;
+    } else if (Math.random() <.4) {
+        x = 105;
+    } else if (Math.random() <.6) {
+        x = 205;
+    } else if (Math.random() <.8) {
+        x = 305;
+    } else {
+        x = 405;
+    }
+    return x;
+}
+
+
+//Constructor for treasure objects. Set random start position
 var Treasure = function () {
-    this.x = 79;
-    this.y = 202;
+    this.x = randomColumn();
+    this.y = randomRow()+15;
     this.sprite = 'images/Star.png';
 }
 
 
+var i = 0;
 
 Treasure.prototype.update = function() {
-    this.x = 105;
-    this.y = 240;
+    i+=1;
+    if (i>240) {   //Reset position of treasure approximately every four seconds
+        this.x = randomColumn();
+        this.y = randomRow()+15;
+        i=0;
+    }
 }
 
 // Draw the enemy on the screen, required method for game
@@ -155,6 +175,9 @@ Character.prototype.update = function(direction) {
         allTreasures.forEach(function(treasure){
             if ((Math.abs(currentPlayer.x - treasure.x) < 60) && (Math.abs(currentPlayer.y - treasure.y)) < 65) {
                 currentPlayer.score += 100;
+                console.log('score:', currentPlayer.score);
+                star.x = randomColumn();
+                star.y = randomRow()+15;
             }
         });
     }
