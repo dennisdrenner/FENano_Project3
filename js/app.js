@@ -1,6 +1,7 @@
 
 "use strict";
 
+
 //Allow user to select girl or boy player
 var person = prompt("Would you like a Boy or Girl player?", "Girl");
 if (person != null) {
@@ -11,7 +12,7 @@ if (person != null) {
 }
 
 
-//Generate a random y coordinate/random row for enemies to appear
+//Generate a random y coordinate/random row for enemies and treasures
 var randomRow = function () {
     var y;
     if (Math.random() <.33) {
@@ -24,6 +25,23 @@ var randomRow = function () {
     return y;
 }
 
+//Generate a random x coordinate/random column for enemies and treasures
+var randomColumn = function () {
+    var x;
+    if (Math.random() <.2) {
+        x = 5;
+    } else if (Math.random() <.4) {
+        x = 105;
+    } else if (Math.random() <.6) {
+        x = 205;
+    } else if (Math.random() <.8) {
+        x = 305;
+    } else {
+        x = 405;
+    }
+    return x;
+}
+
 //Generate random speed for bugs
 var randomSpeed = function () {
     var speed;
@@ -33,11 +51,10 @@ var randomSpeed = function () {
     return speed;
 }
 
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
+// Constructor for enemy class
+
+var Enemy = function() {
     //Set initial starting position for enemy bug.
     //Randomly assign y coordinate to place bug on one of three rows of stones.
     this.x = -100;
@@ -48,6 +65,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 }
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -72,24 +90,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-
-var randomColumn = function () {
-    var x;
-    if (Math.random() <.2) {
-        x = 5;
-    } else if (Math.random() <.4) {
-        x = 105;
-    } else if (Math.random() <.6) {
-        x = 205;
-    } else if (Math.random() <.8) {
-        x = 305;
-    } else {
-        x = 405;
-    }
-    return x;
-}
-
-
 //Constructor for treasure objects. Set random start position
 var Treasure = function () {
     this.x = randomColumn();
@@ -98,31 +98,25 @@ var Treasure = function () {
 }
 
 
+
 var i = 0;
 
 Treasure.prototype.update = function() {
     i+=1;
-    if (i>240) {   //Reset position of treasure approximately every four seconds
+    if (i>240) {   //Reset position of treasure approximately every four seconds (assuming 60 animation frames/second)
         this.x = randomColumn();
         this.y = randomRow()+15;
         i=0;
     }
 }
 
-// Draw the enemy on the screen, required method for game
+// Draw the treasure on the screen
 Treasure.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 
-
-var star = new Treasure();
-
-var allTreasures = [star];
-
 var Character = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
     //Set initial starting position for character
         this.x = 202;
@@ -131,10 +125,9 @@ var Character = function() {
     //Set initial score
         this.score = 0;
 
-    // The image/sprite for our player.
+    // Set the image/sprite for our player depending on the user response to prompt
     if (person == 'boy' || person == 'Boy') {
         this.sprite = 'images/char-boy.png';
-
     } else {
         this.sprite = 'images/char-cat-girl.png';
     }
@@ -143,10 +136,9 @@ var Character = function() {
 
 
 // Update the player's position
-// Parameter: dt, a time delta between ticks
+//Also implement cheat function to temporarily slow down the enemy
 Character.prototype.update = function(direction) {
     var currentPlayer = this;
-
 //move character according to keyboard inputs but make sure it is not moving off the playing field
     if (direction == 'left' && this.x >= 102) { this.x -= 100;}
     if (direction == 'right' && this.x <= 302) { this.x += 100;}
@@ -162,8 +154,6 @@ Character.prototype.update = function(direction) {
     //Check for collision with enemies and treasures
     //Reset player to initial position if collision detected with enemy
     //Add points to player if collision with treasure
-
-
     var detectCollision = function () {
         allEnemies.forEach(function(enemy){
             if ((Math.abs(currentPlayer.x - enemy.x) < 60) && (Math.abs(currentPlayer.y - enemy.y)) < 65) {
@@ -184,7 +174,7 @@ Character.prototype.update = function(direction) {
     detectCollision();
 }
 
-// Draw the enemy on the screen, required method for game
+// Draw the player on the screen
 Character.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
@@ -195,12 +185,9 @@ Character.prototype.handleInput = function (keyCode) {
     if (keyCode == 'right') { player.update('right');}
     if (keyCode == 'down') { player.update('down');}
     if (keyCode == 'slow') { player.update('slow');}
-
 }
 
-// Place the player object in a variable called player
 
-var player = new Character();
 
 
 // Now instantiate your objects.
@@ -211,6 +198,17 @@ var bug2 = new Enemy();
 var bug3 = new Enemy();
 
 var allEnemies = [bug1,bug2, bug3];
+
+
+//Place treasure objects in an array called allTreasures
+var star = new Treasure();
+
+var allTreasures = [star];
+
+
+// Place the player object in a variable called player
+var player = new Character();
+
 
 
 
