@@ -140,15 +140,16 @@ var Character = function() {
 Character.prototype.update = function(direction) {
     var currentPlayer = this;
 //move character according to keyboard inputs but make sure it is not moving off the playing field
+
     if (direction == 'left' && this.x >= 102) { this.x -= 100;}
     if (direction == 'right' && this.x <= 302) { this.x += 100;}
-    if (direction == 'up'  && this.y > -14) { this.y -= 84;}
+    if (direction == 'up'  && this.y > -14) { this.y -= 84;
+    }
     if (direction == 'down' && this.y <406) { this.y += 84;}
     if (direction == 'slow') {
         bug1.speed = 50;
         bug2.speed = 50;
         bug3.speed = 50;
-        console.log(bug1.speed, bug2.speed, bug3.speed);
     }
 
     //Check for collision with enemies and treasures
@@ -165,18 +166,30 @@ Character.prototype.update = function(direction) {
         allTreasures.forEach(function(treasure){
             if ((Math.abs(currentPlayer.x - treasure.x) < 60) && (Math.abs(currentPlayer.y - treasure.y)) < 65) {
                 currentPlayer.score += 100;
-                console.log('score:', currentPlayer.score);
                 star.x = randomColumn();
                 star.y = randomRow()+15;
             }
         });
     }
     detectCollision();
+
+
 }
 
 // Draw the player on the screen
 Character.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+    if (this.y <= -5) {
+       stopAnimating = true;
+       this.x = 202;
+       this.y = 415;
+       var newGame = confirm("Way to go! Another game?");
+       if (newGame == true) {
+        stopAnimating = false;
+       }
+
+    }
 }
 
 Character.prototype.handleInput = function (keyCode) {
@@ -186,8 +199,6 @@ Character.prototype.handleInput = function (keyCode) {
     if (keyCode == 'down') { player.update('down');}
     if (keyCode == 'slow') { player.update('slow');}
 }
-
-
 
 
 // Now instantiate your objects.
