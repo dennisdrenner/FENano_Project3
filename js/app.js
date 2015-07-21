@@ -1,21 +1,25 @@
 
-// App.js
-// Code by Dennis Drenner |  July 2015  |  www.ddcodes.com
-// Udacity.com FrontEnd Nanodegree Program Project | Frogger Game
-//
-// This Javascript code works in conjunction with engine.js and resources.js to run the Frogger game
-// when the index.html file is opened in the browser window.
-// App.js contains the Player, Treasure and Enemy object constructors which describe their
-// appearance and behaviors.
-// The code for animating the game screen is in Engine.js.
+/*
 
+ App.js
+ Code by Dennis Drenner |  July 2015  |  www.ddcodes.com
+ Udacity.com FrontEnd Nanodegree Program Project | Frogger Game
+
+ This Javascript code works in conjunction with engine.js and resources.js to run the Frogger game
+ when the index.html file is opened in the browser window.
+ App.js contains the Player, Treasure and Enemy object constructors which describe their
+ appearance and behaviors.
+ The code for animating the game screen is in Engine.js.
+
+*/
 
 "use strict";
 
 
 //Allow user to select girl or boy player
 var person = prompt("Would you like a Boy or Girl player?", "Girl");
-if (person != null) {
+
+if (person !== null) {
    if (person == 'Boy' || person == 'Girl' || person == 'boy' || person == 'girl') {}
    else {
     prompt("Would you like a boy or girl player?", "Girl");
@@ -27,41 +31,41 @@ if (person != null) {
 // Helper function: Generate a random y coordinate/random row for enemies and treasures
 var randomRow = function () {
     var y;
-    if (Math.random() <.33) {
+    if (Math.random() <0.33) {
         y = 60;
-    } else if (Math.random() <.66) {
+    } else if (Math.random() <0.66) {
         y = 143;
     } else {
         y = 223;
     }
     return y;
-}
+};
 
 // Helper function: Generate a random x coordinate/random column for enemies and treasures
 var randomColumn = function () {
     var x;
-    if (Math.random() <.2) {
+    if (Math.random() <0.2) {
         x = 5;
-    } else if (Math.random() <.4) {
+    } else if (Math.random() <0.4) {
         x = 105;
-    } else if (Math.random() <.6) {
+    } else if (Math.random() <0.6) {
         x = 205;
-    } else if (Math.random() <.8) {
+    } else if (Math.random() <0.8) {
         x = 305;
     } else {
         x = 405;
     }
     return x;
-}
+};
 
 // Helper function: Generate random speed for bugs
 var randomSpeed = function () {
     var speed;
-    if (Math.random() < .33) speed=200;
-    else if (Math.random() <.66) speed=300;
+    if (Math.random() < 0.33) speed=200;
+    else if (Math.random() <0.66) speed=300;
     else speed=400;
     return speed;
-}
+};
 
 
 // Constructor for enemy class
@@ -76,7 +80,7 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 
 // Update the enemy's position, required method for game
@@ -93,12 +97,12 @@ Enemy.prototype.update = function(dt) {
     } else {
          this.x = this.x + (this.speed * dt);
     }
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 
 //Constructor for treasure objects. Set random start position
@@ -106,7 +110,7 @@ var Treasure = function () {
     this.x = randomColumn();
     this.y = randomRow()+15;
     this.sprite = 'images/Star.png';
-}
+};
 
 var i = 0;
 
@@ -118,12 +122,12 @@ Treasure.prototype.update = function() {
         this.y = randomRow()+15;
         i=0;
     }
-}
+};
 
 // Draw the treasure on the screen
 Treasure.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 
 //Constructor for our player object
@@ -144,12 +148,13 @@ var Character = function() {
         this.sprite = 'images/char-cat-girl.png';
     }
 
-}
+};
 
 
 // Update the player's position before rendering game screen
 // Also implement cheat function to temporarily slow down the enemy
 Character.prototype.update = function(direction) {
+
     var currentPlayer = this;
 
 // Move character according to keyboard inputs but make sure it is not moving off the playing field
@@ -168,6 +173,7 @@ Character.prototype.update = function(direction) {
     //Check for collision with enemies and treasures
     //Reset player to initial position if collision detected with enemy
     //Add points to player for 'collision' with treasure
+
     var detectCollision = function () {
         allEnemies.forEach(function(enemy){
             if ((Math.abs(currentPlayer.x - enemy.x) < 60) && (Math.abs(currentPlayer.y - enemy.y)) < 65) {
@@ -183,11 +189,11 @@ Character.prototype.update = function(direction) {
                 star.y = randomRow()+15;
             }
         });
-    }
+    };
+
     detectCollision();
 
-
-}
+};  // End of Character.prototype.update function
 
 // Draw the player on the screen
 Character.prototype.render = function() {
@@ -202,12 +208,12 @@ Character.prototype.render = function() {
        this.x = 202;
        this.y = 415;
        var newGame = confirm("Way to go! Another game?");
-       if (newGame == true) {
+       if (newGame === true) {
         stopAnimating = false;
        }
 
     }
-}
+};
 
 // Event listener for keys which will move the player around the board
 // Also a cheat key 's' which temporarily slows down the enemies
@@ -218,7 +224,7 @@ Character.prototype.handleInput = function (keyCode) {
     if (keyCode == 'right') { player.update('right');}
     if (keyCode == 'down') { player.update('down');}
     if (keyCode == 'slow') { player.update('slow');}
-}
+};
 
 
 // Instantiating Enemy, Treasure and Character objects
