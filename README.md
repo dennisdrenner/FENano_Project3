@@ -1,6 +1,13 @@
-frontend-nanodegree-arcade-game
-===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+FROGGER GAME version 1.0
 
-for self-checking their submission.
+By Dennis Drenner, July 2015  | dennis@dennisdrennercodes.com
+Project for Udacity.com FrontEnd Nanodegree
+
+
+To play game, open index.html in any modern web browser.
+
+Have fun!
+
+
+
